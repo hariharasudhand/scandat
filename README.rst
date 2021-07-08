@@ -1,4 +1,4 @@
-ScanDat : its a image to test software
+ScanDat : its a image to text software
 ========
 
 It is written in Python and uses Qt for its graphical interface.
