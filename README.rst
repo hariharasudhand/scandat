@@ -1,35 +1,11 @@
-LabelImg
+ScanDat : its a image to test software
 ========
-
-.. image:: https://img.shields.io/pypi/v/labelimg.svg
-        :target: https://pypi.python.org/pypi/labelimg
-
-.. image:: https://img.shields.io/travis/tzutalin/labelImg.svg
-        :target: https://travis-ci.org/tzutalin/labelImg
-
-.. image:: https://img.shields.io/badge/lang-en-blue.svg
-        :target: https://github.com/tzutalin/labelImg/blob/master/README.zh.rst
-
-.. image:: https://img.shields.io/badge/lang-zh-green.svg
-        :target: https://github.com/tzutalin/labelImg/blob/master/readme/README.zh.rst
-
-.. image:: https://img.shields.io/badge/lang-zh--TW-green.svg
-    :target: (https://github.com/jonatasemidio/multilanguage-readme-pattern/blob/master/README.pt-br.md
-
-LabelImg is a graphical image annotation tool.
 
 It is written in Python and uses Qt for its graphical interface.
 
 Annotations are saved as XML files in PASCAL VOC format, the format used
 by `ImageNet <http://www.image-net.org/>`__.  Besides, it also supports YOLO and CreateML formats.
 
-.. image:: https://raw.githubusercontent.com/tzutalin/labelImg/master/demo/demo3.jpg
-     :alt: Demo Image
-
-.. image:: https://raw.githubusercontent.com/tzutalin/labelImg/master/demo/demo.jpg
-     :alt: Demo Image
-
-`Watch a demo video <https://youtu.be/p0nR2YsCY_U>`__
 
 Installation
 ------------------
@@ -252,34 +228,4 @@ In case there are issues with loading the classes, you can either:
 2. Remove the `.labelImgSettings.pkl` from your home directory. In Linux and Mac you can do:
     `rm ~/.labelImgSettings.pkl`
 
-
-How to contribute
-~~~~~~~~~~~~~~~~~
-
-Send a pull request
-
-License
-~~~~~~~
-`Free software: MIT license <https://github.com/tzutalin/labelImg/blob/master/LICENSE>`_
-
-Citation: Tzutalin. LabelImg. Git code (2015). https://github.com/tzutalin/labelImg
-
-Related and additional tools
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-1. `ImageNet Utils <https://github.com/tzutalin/ImageNet_Utils>`__ to
-   download image, create a label text for machine learning, etc
-2. `Use Docker to run labelImg <https://hub.docker.com/r/tzutalin/py2qt4>`__
-3. `Generating the PASCAL VOC TFRecord files <https://github.com/tensorflow/models/blob/4f32535fe7040bb1e429ad0e3c948a492a89482d/research/object_detection/g3doc/preparing_inputs.md#generating-the-pascal-voc-tfrecord-files>`__
-4. `App Icon based on Icon by Nick Roach (GPL) <https://www.elegantthemes.com/>`__
-5. `Setup python development in vscode <https://tzutalin.blogspot.com/2019/04/set-up-visual-studio-code-for-python-in.html>`__
-6. `The link of this project on iHub platform <https://code.ihub.org.cn/projects/260/repository/labelImg>`__
-7. `Convert annotation files to CSV format or format for Google Cloud AutoML <https://github.com/tzutalin/labelImg/tree/master/tools>`__
-
-
-
-Stargazers over time
-~~~~~~~~~~~~~~~~~~~~
-
-.. image:: https://starchart.cc/tzutalin/labelImg.svg
 
