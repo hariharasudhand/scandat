@@ -10,9 +10,14 @@ import sys
 import subprocess
 import shutil
 import webbrowser as wb
+from PyQt5.QtWidgets import *
+from PyQt5 import QtGui
+from PyQt5.QtGui import QPixmap
+import sys
 
 from functools import partial
 from collections import defaultdict
+from PyQt5.QtWidgets import QPushButton
 
 try:
     from PyQt5.QtGui import *
@@ -51,7 +56,7 @@ from libs.create_ml_io import JSON_EXT
 from libs.ustr import ustr
 from libs.hashableQListWidgetItem import HashableQListWidgetItem
 
-__appname__ = 'labelImg'
+__appname__ = 'Weeroda'
 
 
 class WindowMixin(object):
@@ -73,12 +78,19 @@ class WindowMixin(object):
         return toolbar
 
 
+
+
 class MainWindow(QMainWindow, WindowMixin):
     FIT_WINDOW, FIT_WIDTH, MANUAL_ZOOM = list(range(3))
 
     def __init__(self, default_filename=None, default_prefdef_class_file=None, default_save_dir=None):
         super(MainWindow, self).__init__()
         self.setWindowTitle(__appname__)
+        self.setWindowIcon(QtGui.QIcon('logo2.png'))
+
+
+
+
 
         # Load setting in the main thread
         self.settings = Settings()
@@ -177,6 +189,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.file_dock.setObjectName(get_str('files'))
         self.file_dock.setWidget(file_list_container)
 
+
         self.zoom_widget = ZoomWidget()
         self.color_dialog = ColorDialog(parent=self)
 
@@ -199,13 +212,25 @@ class MainWindow(QMainWindow, WindowMixin):
         self.canvas.selectionChanged.connect(self.shape_selection_changed)
         self.canvas.drawingPolygon.connect(self.toggle_drawing_sensitive)
 
+
         self.setCentralWidget(scroll)
         self.addDockWidget(Qt.RightDockWidgetArea, self.dock)
         self.addDockWidget(Qt.RightDockWidgetArea, self.file_dock)
         self.file_dock.setFeatures(QDockWidget.DockWidgetFloatable)
+        self.acceptDrops()
+        self.label = QLabel(self)
+        self.pixmap = QPixmap('logo5.png')
+        self.label.setPixmap(self.pixmap)
+        self.label.move(1140, 530)
+        self.label.resize(self.pixmap.width(), self.pixmap.height())
+        button = QPushButton("Bluetooth", self)
+        button.setGeometry(600, 640, 100, 30)
+
 
         self.dock_features = QDockWidget.DockWidgetClosable | QDockWidget.DockWidgetFloatable
         self.dock.setFeatures(self.dock.features() ^ self.dock_features)
+
+
 
         # Actions
         action = partial(new_action, self)
@@ -236,6 +261,9 @@ class MainWindow(QMainWindow, WindowMixin):
 
         save = action(get_str('save'), self.save_file,
                       'Ctrl+S', 'save', get_str('saveDetail'), enabled=False)
+
+
+
 
         def get_format_meta(format):
             """
@@ -400,7 +428,7 @@ class MainWindow(QMainWindow, WindowMixin):
         self.display_label_option.triggered.connect(self.toggle_paint_labels_option)
 
         add_actions(self.menus.file,
-                    (open, open_dir, change_save_dir, open_annotation, copy_prev_bounding, self.menus.recentFiles, save, save_format, save_as, close, reset_all, delete_image, quit))
+                    (open, open_dir, change_save_dir, open_annotation, copy_prev_bounding, self.menus.recentFiles, save, save_as, close, reset_all, delete_image, quit))
         add_actions(self.menus.help, (help_default, show_info, show_shortcut))
         add_actions(self.menus.view, (
             self.auto_saving,
@@ -421,8 +449,8 @@ class MainWindow(QMainWindow, WindowMixin):
 
         self.tools = self.toolbar('Tools')
         self.actions.beginner = (
-            open, open_dir, change_save_dir, open_next_image, open_prev_image, verify, save, save_format, None, create, copy, delete, None,
-            zoom_in, zoom, zoom_out, fit_window, fit_width)
+
+            )
 
         self.actions.advanced = (
             open, open_dir, change_save_dir, open_next_image, open_prev_image, save, save_format, None,
@@ -1636,3 +1664,6 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
+
+App = QApplication(sys.argv)
+

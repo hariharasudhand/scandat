@@ -1,0 +1,3 @@
+[console_scripts]
+bluetoothpython = bluetooth.cli:cli
+
