@@ -1,38 +1,20 @@
-from bluetooth import *
+import bluetooth
 
-server_sock=BluetoothSocket( RFCOMM )
-server_sock.bind(("",PORT_ANY))
+server_sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
+
+port = bluetooth.get_available_port( bluetooth.RFCOMM )
+server_sock.bind(("",port))
 server_sock.listen(1)
+print("listening on port %d" % port)
 
-port = server_sock.getsockname()[1]
+uuid = "1e0ca4ea-299d-4335-93eb-27fcfe7fa848"
+bluetooth.advertise_service( server_sock, "FooBar Service", uuid )
 
-uuid = "94f39d29-7d6d-437d-973b-fba39e49d4ee"
+client_sock,address = server_sock.accept()
+print ("Accepted connection from ",address)
 
-advertise_service( server_sock, "SampleServer",
-                   service_id = uuid,
-                   service_classes = [ uuid, SERIAL_PORT_CLASS ],
-                   profiles = [ SERIAL_PORT_PROFILE ])
-
-print("Waiting for connection on RFCOMM channel %d" % port)
-
-client_sock, client_info = server_sock.accept()
-
-print("Accepted connection from ", client_info)
-
-#this part will try to get something form the client
-# you are missing this part - please see it's an endlees loop!!
-try:
-    while True:
-        data = client_sock.bind(("2401:4900:230c:6025:e9e1:9663:b3c1:7487", 9999))
-        data = client_sock.recv(1024)
-        if len(data) == 0: break
-        print("received [%s]" % data)
-
-# raise an exception if there was any error
-except IOError:
-    pass
-
-print("disconnected")
+data = client_sock.recv(1024)
+print ("received [%s]" % data)
 
 client_sock.close()
 server_sock.close()

@@ -59,6 +59,10 @@ from libs.hashableQListWidgetItem import HashableQListWidgetItem
 __appname__ = 'Weeroda'
 
 
+#def bluetooth(clicked):
+    #print("clicked")
+#bluetooth()
+
 class WindowMixin(object):
 
     def menu(self, title, actions=None):
@@ -87,8 +91,6 @@ class MainWindow(QMainWindow, WindowMixin):
         super(MainWindow, self).__init__()
         self.setWindowTitle(__appname__)
         self.setWindowIcon(QtGui.QIcon('logo2.png'))
-
-
 
 
 
@@ -225,6 +227,10 @@ class MainWindow(QMainWindow, WindowMixin):
         self.label.resize(self.pixmap.width(), self.pixmap.height())
         button = QPushButton("Bluetooth", self)
         button.setGeometry(600, 640, 100, 30)
+        #button.clicked.connect(self.clickme)
+
+
+
 
 
         self.dock_features = QDockWidget.DockWidgetClosable | QDockWidget.DockWidgetFloatable
@@ -505,6 +511,12 @@ class MainWindow(QMainWindow, WindowMixin):
         self.canvas.set_drawing_color(self.line_color)
         # Add chris
         Shape.difficult = self.difficult
+
+        def bluetooth(clicked):
+            print("clicked")
+
+        bluetooth()
+
 
         def xbool(x):
             if isinstance(x, QVariant):
