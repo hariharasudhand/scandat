@@ -19,7 +19,7 @@ from tkinter import *
 from functools import partial
 from collections import defaultdict
 from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication
+from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication, QPushButton
 from PyQt5.QtGui import QIcon
 
 try:
@@ -86,16 +86,112 @@ class WindowMixin(object):
         return toolbar
 
 
+class Window2(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Scandat Studio")
+        self.setGeometry(20, 30, 1300, 800)
+        self.setWindowIcon(QIcon('logo5.png'))
+
+        button = QPushButton('Run', self)
+        button.setToolTip('This is an example button')
+        button.setGeometry(500, 600, 100, 30)
+        button.clicked.connect(self.on_click)
+        button.clicked.connect(self.on_click)
+
+        button2 = QPushButton('Open Dir', self)
+        button2.setToolTip('this is for open directory')
+        button2.setGeometry(150, 100, 170, 30)
+        button2.clicked.connect(self.dialog)
 
 
-class MainWindow(QMainWindow, WindowMixin):
+        button3 = QPushButton('Select Bounding Template', self)
+        button3.setToolTip('this is for open directory')
+        button3.setGeometry(800, 100, 170, 30)
+        button3.clicked.connect(self.on_click)
+
+        button4 = QPushButton('View Results', self)
+        button4.setToolTip('this is for open directory')
+        button4.setGeometry(1000, 660, 100, 30)
+        button4.clicked.connect(self.on_click)
+
+        combobox = QComboBox(self)
+        combobox.setToolTip('this is for selection')
+        combobox.setGeometry(800, 150, 170, 30)
+        pro_list = ['temp1', 'temp2', 'temp3', 'temp4', 'temp5']
+        combobox.setEditable(False)
+        combobox.addItems(pro_list)
+        combobox.activated.connect(self.pro_click)
+
+        self.label_1 = QLabel("", self)
+        self.label_1.move(80, 190)
+        self.label_1.setStyleSheet("border :1px solid black;")
+        self.label_1.resize(370, 400)
+
+        self.label_2 = QLabel("", self)
+        self.label_2.move(700, 190)
+        self.label_2.setStyleSheet("border :1px solid black;")
+        self.label_2.resize(370, 400)
+
+        self.label_3 = QLabel('Run Status :', self)
+        self.label_3.move(100, 665)
+        self.label_3.setFont(QFont('Arial', 10))
+
+        self.label_4 = QLabel('Run Status :', self)
+        self.label_4.move(360, 665)
+        self.label_4.setFont(QFont('Arial', 10))
+
+        self.label_5 = QLabel('Run Status :', self)
+        self.label_5.move(660, 665)
+        self.label_5.setFont(QFont('Arial', 10))
+
+        self.label_6 = QLabel('Not Started ', self)
+        self.label_6.move(180, 665)
+        self.label_6.setStyleSheet('background: 2px solid red')
+        self.label_6.setFont(QFont('Arial', 10))
+
+        self.label_7 = QLabel('In Progress ', self)
+        self.label_7.move(440, 665)
+        self.label_7.setStyleSheet('background: 2px solid brown')
+        self.label_7.setFont(QFont('Arial', 10))
+
+        self.label_8 = QLabel('Completed ', self)
+        self.label_8.move(740, 665)
+        self.label_8.setStyleSheet('background: 2px solid green')
+        self.label_8.setFont(QFont('Arial', 10))
+
+        self.show()
+
+    @pyqtSlot()
+    def on_click(self):
+        print('PyQt5 button click')
+
+    def pro_click(self):
+        print('choosen')
+
+    def dialog(self):
+        path = QFileDialog.getOpenFileName(self, 'Open a file', '',
+                                           'All Files (*.*)')
+        if path != ('', ''):
+            print("File path : " + path[0])
+
+
+
+
+
+
+
+class MainWindow(QMainWindow, WindowMixin, QWidget):
     FIT_WINDOW, FIT_WIDTH, MANUAL_ZOOM = list(range(3))
+
 
     def __init__(self, default_filename=None, default_prefdef_class_file=None, default_save_dir=None):
         super(MainWindow, self).__init__()
         self.setWindowTitle(__appname__)
         self.setWindowIcon(QtGui.QIcon('logo.png'))
         self.resize(400, 200)
+
+
 
 
 
@@ -429,14 +525,27 @@ class MainWindow(QMainWindow, WindowMixin):
             recentFiles=QMenu(get_str('menu_openRecent')),
             labelList=label_menu)
 
-        RunAct = QAction(QIcon('butt.jpg'), '&Run', self)
-        RunAct.setShortcut('Alt+Ctrl+F10')
-        RunAct.setStatusTip('Run application')
-        RunAct.triggered.connect(self.initUI)
+        #address = 'G:\work\scandatsource\scandat\screen.py'
 
-        menu = self.menuBar()
-        file_menu = menu.addMenu("&Run")
-        file_menu.addAction(RunAct)
+        #RunAct = QAction(QIcon('butt.jpg'), '&Run',self)
+        #RunAct.setShortcut('Alt+Ctrl+F10')
+        #RunAct.setStatusTip('open the Result')
+        #self.Result(RunAct, RunAct(triggered()), this, SLOT(open()))
+        #RunAct.triggered[bool].connect(self.new_window)
+
+
+        #menu = self.menuBar()
+        #file_menu = menu.addMenu("&Run")
+        #file_menu.addAction(RunAct)
+
+        self.pushButton = QPushButton("Run", self)
+        self.pushButton.move(60, 600)
+        self.pushButton.setToolTip("<h3>Start the Session</h3>")
+
+        self.pushButton.clicked.connect(self.window2)
+
+
+
 
 
 
@@ -548,6 +657,8 @@ class MainWindow(QMainWindow, WindowMixin):
 
 
 
+
+
         def xbool(x):
             if isinstance(x, QVariant):
                 return x.toBool()
@@ -579,7 +690,28 @@ class MainWindow(QMainWindow, WindowMixin):
         if self.file_path and os.path.isdir(self.file_path):
             self.open_dir_dialog(dir_path=self.file_path, silent=True)
 
-    def initUI(self):
+    def window2(self):  # <===
+        self.w = Window2()
+        self.w.show()
+
+
+    def new_window(self):
+
+        # Important! Add `self` to keep the window open until closed
+        self.another_window = AnotherWindow()
+
+        self.another_window.show()
+
+    def dialog(self):
+        self.setWindowTitle("scandat studio")
+
+
+
+
+
+
+
+    def Result(self):
         self.setWindowTitle('Scandat Studio')
         self.setGeometry(20,30,1300,800)
         self.setWindowIcon(QIcon('logo5.png'))
@@ -649,11 +781,15 @@ class MainWindow(QMainWindow, WindowMixin):
         self.label_8.setStyleSheet('background: 2px solid green')
         self.label_8.setFont(QFont('Arial', 10))
 
+
         self.show()
+
+
 
     @pyqtSlot()
     def on_click(self):
         print('PyQt5 button click')
+        
 
     def pro_click(self):
         print('choosen')

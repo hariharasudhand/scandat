@@ -1,11 +1,13 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QComboBox,QHBoxLayout, QVBoxLayout, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QComboBox,QHBoxLayout, QVBoxLayout, QLabel, QFileDialog
 from PyQt5.QtCore import QRect
 from PyQt5.QtGui import QIcon,QFont
 from PyQt5.QtCore import pyqtSlot
+import webbrowser
+import os
 
 
-class App(QWidget):
+class App(QWidget ):
 
     def __init__(self):
         super().__init__()
@@ -29,7 +31,7 @@ class App(QWidget):
         button2 = QPushButton('Open Dir', self)
         button2.setToolTip('this is for open directory')
         button2.setGeometry(150,100,170,30)
-        button2.clicked.connect(self.on_click)
+        button2.clicked.connect(self.dialog)
 
         button3 = QPushButton('Select Bounding Template', self)
         button3.setToolTip('this is for open directory')
@@ -97,7 +99,11 @@ class App(QWidget):
         self.label_8.setStyleSheet('background: 2px solid green')
         self.label_8.setFont(QFont('Arial', 10))
 
+
+
         self.show()
+
+
 
     @pyqtSlot()
     def on_click(self):
@@ -105,6 +111,15 @@ class App(QWidget):
 
     def pro_click(self):
         print('choosen')
+
+    def dialog(self):
+        path = QFileDialog.getOpenFileName(self, 'Open a file', '',
+                                           'All Files (*.*)')
+        if path != ('', ''):
+            print("File path : " + path[0])
+
+
+
 
 
 if __name__ == '__main__':
