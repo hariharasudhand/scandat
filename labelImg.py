@@ -230,8 +230,8 @@ class MainWindow(QMainWindow, WindowMixin):
         #self.label.setPixmap(self.pixmap)
         #self.label.move(1140, 530)
         #self.label.resize(self.pixmap.width(), self.pixmap.height())
-        button = QPushButton("Bluetooth", self)
-        button.setGeometry(600, 640, 100, 30)
+        #button = QPushButton("Bluetooth", self)
+        #button.setGeometry(600, 640, 100, 30)
         #button.clicked.connect(self.clickme)
 
 
