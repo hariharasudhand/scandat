@@ -1,0 +1,26 @@
+<annotation>
+	<folder>images</folder>
+	<filename>ashok.jpg</filename>
+	<path>G:/Scandat/sacndat_studio/BotBees/xml files/ashok</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>2481</width>
+		<height>3508</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>person</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>49</xmin>
+			<ymin>942</ymin>
+			<xmax>571</xmax>
+			<ymax>1109</ymax>
+		</bndbox>
+	</object>
+</annotation>

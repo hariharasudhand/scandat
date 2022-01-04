@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1457</width>
+    <height>769</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ScandatStudio</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>python/env/logo.png</normaloff>python/env/logo.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QListView" name="ImageView">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1151</width>
+      <height>771</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTabWidget" name="BoxAndFileLists">
+    <property name="geometry">
+     <rect>
+      <x>1150</x>
+      <y>0</y>
+      <width>211</width>
+      <height>741</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="BoxLists">
+     <attribute name="title">
+      <string>Box Lists</string>
+     </attribute>
+     <widget class="QListView" name="listView_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>-10</y>
+        <width>211</width>
+        <height>731</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="FileLabels">
+     <attribute name="title">
+      <string>File Labels</string>
+     </attribute>
+     <widget class="QListView" name="listView_3">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>-10</y>
+        <width>211</width>
+        <height>731</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(170, 0, 0);</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionOpen"/>
+   <addaction name="actionOpenDir"/>
+   <addaction name="actionSave"/>
+   <addaction name="actionSaveAs"/>
+   <addaction name="actionCreate_RectBox"/>
+   <addaction name="actionEdit_Label"/>
+   <addaction name="actionDuplicate_RectBox"/>
+   <addaction name="actionDelete_RectBox"/>
+   <addaction name="actionHide_RectBox"/>
+   <addaction name="actionShow_RectBox"/>
+   <addaction name="actionZoom_In"/>
+   <addaction name="actionZoom_Out"/>
+   <addaction name="actionOriginal_Size"/>
+   <addaction name="actionFit_Window"/>
+   <addaction name="actionFit_Width"/>
+   <addaction name="actionClose"/>
+   <addaction name="actionReset_All"/>
+   <addaction name="actionDelete_Current_Image"/>
+   <addaction name="actionQuit"/>
+  </widget>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/open.png</normaloff>python/env/resources/icons/open.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="toolTip">
+    <string>open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionOpenDir">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/open.png</normaloff>python/env/resources/icons/open.png</iconset>
+   </property>
+   <property name="text">
+    <string>OpenDir</string>
+   </property>
+   <property name="toolTip">
+    <string>open the directory</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/save.png</normaloff>python/env/resources/icons/save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="toolTip">
+    <string>save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/save-as.png</normaloff>python/env/resources/icons/save-as.png</iconset>
+   </property>
+   <property name="text">
+    <string>SaveAs</string>
+   </property>
+   <property name="toolTip">
+    <string>save as</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionCreate_RectBox">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/objects.png</normaloff>python/env/resources/icons/objects.png</iconset>
+   </property>
+   <property name="text">
+    <string>Create RectBox</string>
+   </property>
+   <property name="toolTip">
+    <string>create the rect</string>
+   </property>
+   <property name="shortcut">
+    <string>W</string>
+   </property>
+  </action>
+  <action name="actionEdit_Label">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/edit.png</normaloff>python/env/resources/icons/edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit Label</string>
+   </property>
+   <property name="toolTip">
+    <string>edit the label</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionDuplicate_RectBox">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/copy.png</normaloff>python/env/resources/icons/copy.png</iconset>
+   </property>
+   <property name="text">
+    <string>Duplicate RectBox</string>
+   </property>
+   <property name="toolTip">
+    <string>duplicate the rectbox</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionDelete_RectBox">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/cancel.png</normaloff>python/env/resources/icons/cancel.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete RectBox</string>
+   </property>
+   <property name="toolTip">
+    <string>delete the rectbox</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="actionHide_RectBox">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/eye.png</normaloff>python/env/resources/icons/eye.png</iconset>
+   </property>
+   <property name="text">
+    <string>Hide RectBox</string>
+   </property>
+   <property name="toolTip">
+    <string>hide the rectbox</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
+   </property>
+  </action>
+  <action name="actionShow_RectBox">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/eye.png</normaloff>python/env/resources/icons/eye.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show RectBox</string>
+   </property>
+   <property name="toolTip">
+    <string>showing the rectbox</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionZoom_In">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/zoom-in.png</normaloff>python/env/resources/icons/zoom-in.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom In</string>
+   </property>
+   <property name="toolTip">
+    <string>zoom in</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl++</string>
+   </property>
+  </action>
+  <action name="actionZoom_Out">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/zoom-out.png</normaloff>python/env/resources/icons/zoom-out.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom Out</string>
+   </property>
+   <property name="toolTip">
+    <string>zoom out</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actionOriginal_Size">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/zoom.png</normaloff>python/env/resources/icons/zoom.png</iconset>
+   </property>
+   <property name="text">
+    <string>Original Size</string>
+   </property>
+   <property name="toolTip">
+    <string>original size</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+=</string>
+   </property>
+  </action>
+  <action name="actionFit_Window">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/fit-window.png</normaloff>python/env/resources/icons/fit-window.png</iconset>
+   </property>
+   <property name="text">
+    <string>Fit Window</string>
+   </property>
+   <property name="toolTip">
+    <string>fit window</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionFit_Width">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/fit-width.png</normaloff>python/env/resources/icons/fit-width.png</iconset>
+   </property>
+   <property name="text">
+    <string>Fit Width</string>
+   </property>
+   <property name="toolTip">
+    <string>fit width</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/close.png</normaloff>python/env/resources/icons/close.png</iconset>
+   </property>
+   <property name="text">
+    <string>Close</string>
+   </property>
+   <property name="toolTip">
+    <string>close</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionReset_All">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/resetall.png</normaloff>python/env/resources/icons/resetall.png</iconset>
+   </property>
+   <property name="text">
+    <string>Reset All</string>
+   </property>
+   <property name="toolTip">
+    <string>reset all</string>
+   </property>
+  </action>
+  <action name="actionDelete_Current_Image">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/delete.png</normaloff>python/env/resources/icons/delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete Current Image</string>
+   </property>
+   <property name="toolTip">
+    <string>delete the current image</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+D</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="icon">
+    <iconset>
+     <normaloff>python/env/resources/icons/quit.png</normaloff>python/env/resources/icons/quit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="toolTip">
+    <string>quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

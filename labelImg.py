@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from _csv import reader, writer
+
+import FileExce
+import constants
 import argparse
 import codecs
 import distutils.spawn
@@ -10,17 +14,23 @@ import sys
 import subprocess
 import shutil
 import webbrowser as wb
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui
 from PyQt5.QtGui import QPixmap
 import sys
 from tkinter import *
 
+import view_result
+from view_result import *
+
+
 from functools import partial
 from collections import defaultdict
 from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication, QPushButton
+from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication
 from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import *
 
 try:
     from PyQt5.QtGui import *
@@ -35,8 +45,8 @@ except ImportError:
     if sys.version_info.major >= 3:
         import sip
         sip.setapi('QVariant', 2)
-    from PyQt4.QtGui import *
-    from PyQt4.QtCore import *
+    from PyQt5.QtGui import *
+    from PyQt5.QtCore import *
 
 from libs.combobox import ComboBox
 from libs.resources import *
@@ -59,6 +69,7 @@ from libs.create_ml_io import CreateMLReader
 from libs.create_ml_io import JSON_EXT
 from libs.ustr import ustr
 from libs.hashableQListWidgetItem import HashableQListWidgetItem
+import tkinter.messagebox
 
 __appname__ = 'Scandat Studio'
 
@@ -66,6 +77,7 @@ __appname__ = 'Scandat Studio'
 #def bluetooth(clicked):
     #print("clicked")
 #bluetooth()
+
 
 class WindowMixin(object):
 
@@ -86,112 +98,17 @@ class WindowMixin(object):
         return toolbar
 
 
-class Window2(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Scandat Studio")
-        self.setGeometry(20, 30, 1300, 800)
-        self.setWindowIcon(QIcon('logo5.png'))
 
-        button = QPushButton('Run', self)
-        button.setToolTip('This is an example button')
-        button.setGeometry(500, 600, 100, 30)
-        button.clicked.connect(self.on_click)
-        button.clicked.connect(self.on_click)
-
-        button2 = QPushButton('Open Dir', self)
-        button2.setToolTip('this is for open directory')
-        button2.setGeometry(150, 100, 170, 30)
-        button2.clicked.connect(self.dialog)
-
-
-        button3 = QPushButton('Select Bounding Template', self)
-        button3.setToolTip('this is for open directory')
-        button3.setGeometry(800, 100, 170, 30)
-        button3.clicked.connect(self.on_click)
-
-        button4 = QPushButton('View Results', self)
-        button4.setToolTip('this is for open directory')
-        button4.setGeometry(1000, 660, 100, 30)
-        button4.clicked.connect(self.on_click)
-
-        combobox = QComboBox(self)
-        combobox.setToolTip('this is for selection')
-        combobox.setGeometry(800, 150, 170, 30)
-        pro_list = ['temp1', 'temp2', 'temp3', 'temp4', 'temp5']
-        combobox.setEditable(False)
-        combobox.addItems(pro_list)
-        combobox.activated.connect(self.pro_click)
-
-        self.label_1 = QLabel("", self)
-        self.label_1.move(80, 190)
-        self.label_1.setStyleSheet("border :1px solid black;")
-        self.label_1.resize(370, 400)
-
-        self.label_2 = QLabel("", self)
-        self.label_2.move(700, 190)
-        self.label_2.setStyleSheet("border :1px solid black;")
-        self.label_2.resize(370, 400)
-
-        self.label_3 = QLabel('Run Status :', self)
-        self.label_3.move(100, 665)
-        self.label_3.setFont(QFont('Arial', 10))
-
-        self.label_4 = QLabel('Run Status :', self)
-        self.label_4.move(360, 665)
-        self.label_4.setFont(QFont('Arial', 10))
-
-        self.label_5 = QLabel('Run Status :', self)
-        self.label_5.move(660, 665)
-        self.label_5.setFont(QFont('Arial', 10))
-
-        self.label_6 = QLabel('Not Started ', self)
-        self.label_6.move(180, 665)
-        self.label_6.setStyleSheet('background: 2px solid red')
-        self.label_6.setFont(QFont('Arial', 10))
-
-        self.label_7 = QLabel('In Progress ', self)
-        self.label_7.move(440, 665)
-        self.label_7.setStyleSheet('background: 2px solid brown')
-        self.label_7.setFont(QFont('Arial', 10))
-
-        self.label_8 = QLabel('Completed ', self)
-        self.label_8.move(740, 665)
-        self.label_8.setStyleSheet('background: 2px solid green')
-        self.label_8.setFont(QFont('Arial', 10))
-
-        self.show()
-
-    @pyqtSlot()
-    def on_click(self):
-        print('PyQt5 button click')
-
-    def pro_click(self):
-        print('choosen')
-
-    def dialog(self):
-        path = QFileDialog.getOpenFileName(self, 'Open a file', '',
-                                           'All Files (*.*)')
-        if path != ('', ''):
-            print("File path : " + path[0])
-
-
-
-
-
-
-
-class MainWindow(QMainWindow, WindowMixin, QWidget):
+class MainWindow(QMainWindow, WindowMixin):
     FIT_WINDOW, FIT_WIDTH, MANUAL_ZOOM = list(range(3))
-
+    
 
     def __init__(self, default_filename=None, default_prefdef_class_file=None, default_save_dir=None):
         super(MainWindow, self).__init__()
         self.setWindowTitle(__appname__)
         self.setWindowIcon(QtGui.QIcon('logo.png'))
         self.resize(400, 200)
-
-
+        self.setStyleSheet("background:#669999")
 
 
 
@@ -207,7 +124,7 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
         get_str = lambda str_id: self.string_bundle.get_string(str_id)
 
         # Save as Pascal voc xml
-        self.default_save_dir = default_save_dir
+        self.default_save_dir = constants.Dir_path_save
         self.label_file_format = settings.get(SETTING_LABEL_FILE_FORMAT, LabelFileFormat.PASCAL_VOC)
 
         # For loading all image under a directory
@@ -240,6 +157,7 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
 
         # Create a widget for using default label
         self.use_default_label_checkbox = QCheckBox(get_str('useDefaultLabel'))
+        self.use_default_label_checkbox.setStyleSheet('color:#16171a')
         self.use_default_label_checkbox.setChecked(False)
         self.default_label_text_line = QLineEdit()
         use_default_label_qhbox_layout = QHBoxLayout()
@@ -250,18 +168,20 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
 
         # Create a widget for edit and diffc button
         self.diffc_button = QCheckBox(get_str('useDifficult'))
+        self.diffc_button.setStyleSheet('color:#16171a')
         self.diffc_button.setChecked(False)
         self.diffc_button.stateChanged.connect(self.button_state)
-        self.edit_button = QToolButton()
-        self.edit_button.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        # self.edit_button = QToolButton()
+        # self.edit_button.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
-        # Add some of widgets to list_layout
-        list_layout.addWidget(self.edit_button)
+        # # Add some of widgets to list_layout
+        # list_layout.addWidget(self.edit_button)
         list_layout.addWidget(self.diffc_button)
         list_layout.addWidget(use_default_label_container)
 
         # Create and add combobox for showing unique labels in group
         self.combo_box = ComboBox(self)
+        self.combo_box.setStyleSheet('background:#16171a')
         list_layout.addWidget(self.combo_box)
 
         # Create and add a widget for showing current label items
@@ -278,6 +198,7 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
 
 
         self.dock = QDockWidget(get_str('boxLabelText'), self)
+        self.dock.setStyleSheet('color:#f2ab53')
         self.dock.setObjectName(get_str('labels'))
         self.dock.setWidget(label_list_container)
 
@@ -289,6 +210,7 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
         file_list_container = QWidget()
         file_list_container.setLayout(file_list_layout)
         self.file_dock = QDockWidget(get_str('fileList'), self)
+        self.file_dock.setStyleSheet('color:#f2ab53')
         self.file_dock.setObjectName(get_str('files'))
         self.file_dock.setWidget(file_list_container)
 
@@ -301,6 +223,7 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
         self.canvas.set_drawing_shape_to_square(settings.get(SETTING_DRAW_SQUARE, False))
 
         scroll = QScrollArea()
+        scroll.setStyleSheet('color:#f2ab53')
         scroll.setWidget(self.canvas)
         scroll.setWidgetResizable(True)
         self.scroll_bars = {
@@ -308,41 +231,29 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
             Qt.Horizontal: scroll.horizontalScrollBar()
         }
         self.scroll_area = scroll
+        self.scroll_area.setStyleSheet('color:#f2ab53')
         self.canvas.scrollRequest.connect(self.scroll_request)
-
         self.canvas.newShape.connect(self.new_shape)
         self.canvas.shapeMoved.connect(self.set_dirty)
         self.canvas.selectionChanged.connect(self.shape_selection_changed)
         self.canvas.drawingPolygon.connect(self.toggle_drawing_sensitive)
-
-
         self.setCentralWidget(scroll)
         self.addDockWidget(Qt.RightDockWidgetArea, self.dock)
         self.addDockWidget(Qt.RightDockWidgetArea, self.file_dock)
         self.file_dock.setFeatures(QDockWidget.DockWidgetFloatable)
+        
         #self.acceptDrops()
         #self.label = QLabel(self)
         #self.pixmap = QPixmap('logo5.png')
         #self.label.setPixmap(self.pixmap)
         #self.label.move(1140, 530)
         #self.label.resize(self.pixmap.width(), self.pixmap.height())
-        button = QPushButton("Bluetooth", self)
-        button.setGeometry(600, 640, 100, 30)
+        # button = QPushButton("Bluetooth", self)
+        # button.setGeometry(600, 640, 100, 30)
         #button.clicked.connect(self.clickme)
-
-
-
-
-
-
-
-
 
         self.dock_features = QDockWidget.DockWidgetClosable | QDockWidget.DockWidgetFloatable
         self.dock.setFeatures(self.dock.features() ^ self.dock_features)
-
-
-
 
         # Actions
         action = partial(new_action, self)
@@ -350,17 +261,17 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
                       'Ctrl+Q', 'quit', get_str('quitApp'))
 
         open = action(get_str('openFile'), self.open_file,
-                      'Ctrl+O', 'open', get_str('openFileDetail'))
+                      'Ctrl+O', 'file', get_str('openFileDetail'))
 
         open_dir = action(get_str('openDir'), self.open_dir_dialog,
                           'Ctrl+u', 'open', get_str('openDir'))
 
         change_save_dir = action(get_str('changeSaveDir'), self.change_save_dir_dialog,
-                                 'Ctrl+r', 'open', get_str('changeSavedAnnotationDir'))
+                                 'Ctrl+r', 'save', get_str('changeSavedAnnotationDir'))
 
         open_annotation = action(get_str('openAnnotation'), self.open_annotation_dialog,
-                                 'Ctrl+Shift+O', 'open', get_str('openAnnotationDetail'))
-        copy_prev_bounding = action(get_str('copyPrevBounding'), self.copy_previous_bounding_boxes, 'Ctrl+v', 'copy', get_str('copyPrevBounding'))
+                                 'Ctrl+Shift+O', 'new', get_str('openAnnotationDetail'))
+        # copy_prev_bounding = action(get_str('copyPrevBounding'), self.copy_previous_bounding_boxes, 'Ctrl+v', 'copy', get_str('copyPrevBounding'))
 
         open_next_image = action(get_str('nextImg'), self.open_next_image,
                                  'd', 'next', get_str('nextImgDetail'))
@@ -392,10 +303,10 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
                              get_format_meta(self.label_file_format)[1],
                              get_str('changeSaveFormat'), enabled=True)
 
-        save_as = action(get_str('saveAs'), self.save_file_as,
-                         'Ctrl+Shift+S', 'save-as', get_str('saveAsDetail'), enabled=False)
+        # save_as = action(get_str('saveAs'), self.save_file_as,
+        #                  'Ctrl+Shift+S', 'save-as', get_str('saveAsDetail'), enabled=False)
 
-        close = action(get_str('closeCur'), self.close_file, 'Ctrl+W', 'close', get_str('closeCurDetail'))
+        close = action(get_str('closeCur'), self.close_file, 'Ctrl+W', 'delete', get_str('closeCurDetail'))
 
         delete_image = action(get_str('deleteImg'), self.delete_image, 'Ctrl+Shift+D', 'close', get_str('deleteImgDetail'))
 
@@ -417,9 +328,9 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
                       'Ctrl+D', 'copy', get_str('dupBoxDetail'),
                       enabled=False)
 
-        advanced_mode = action(get_str('advancedMode'), self.toggle_advanced_mode,
-                               'Ctrl+Shift+A', 'expert', get_str('advancedModeDetail'),
-                               checkable=True)
+        # advanced_mode = action(get_str('advancedMode'), self.toggle_advanced_mode,
+        #                        'Ctrl+Shift+A', 'expert', get_str('advancedModeDetail'),
+        #                        checkable=True)
 
         hide_all = action(get_str('hideAllBox'), partial(self.toggle_polygons, False),
                           'Ctrl+H', 'hide', get_str('hideAllBoxDetail'),
@@ -467,9 +378,9 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
         }
 
         edit = action(get_str('editLabel'), self.edit_label,
-                      'Ctrl+E', 'edit', get_str('editLabelDetail'),
+                      'Ctrl+E', 'labels', get_str('editLabelDetail'),
                       enabled=False)
-        self.edit_button.setDefaultAction(edit)
+        # self.edit_button.setDefaultAction(edit)
 
         shape_line_color = action(get_str('shapeLineColor'), self.choose_shape_line_color,
                                   icon='color_line', tip=get_str('shapeLineColorDetail'),
@@ -498,15 +409,15 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
 
 
         # Store actions for further handling.
-        self.actions = Struct(save=save, save_format=save_format, saveAs=save_as, open=open, close=close, resetAll=reset_all, deleteImg=delete_image,
+        self.actions = Struct(save=save, save_format=save_format, open=open, close=close, resetAll=reset_all, deleteImg=delete_image,
                               lineColor=color1, create=create, delete=delete, edit=edit, copy=copy,
-                              createMode=create_mode, editMode=edit_mode, advancedMode=advanced_mode,
+                              createMode=create_mode, editMode=edit_mode, 
                               shapeLineColor=shape_line_color, shapeFillColor=shape_fill_color,
                               zoom=zoom, zoomIn=zoom_in, zoomOut=zoom_out, zoomOrg=zoom_org,
                               fitWindow=fit_window, fitWidth=fit_width,
                               zoomActions=zoom_actions,
                               fileMenuActions=(
-                                  open, open_dir, save, save_as, close, reset_all, quit),
+                                  open, open_dir, save, close, reset_all, quit),
                               beginner=(), advanced=(),
                               editMenu=(edit, copy, delete,
                                         None, color1, self.draw_squares_option),
@@ -515,7 +426,7 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
                                                delete, shape_line_color, shape_fill_color),
                               onLoadActive=(
                                   close, create, create_mode, edit_mode),
-                              onShapesPresent=(save_as, hide_all, show_all))
+                              onShapesPresent=( hide_all, show_all))
 
         self.menus = Struct(
             file=self.menu(get_str('menu_file')),
@@ -525,31 +436,15 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
             recentFiles=QMenu(get_str('menu_openRecent')),
             labelList=label_menu)
 
-        #address = 'G:\work\scandatsource\scandat\screen.py'
 
-        #RunAct = QAction(QIcon('butt.jpg'), '&Run',self)
-        #RunAct.setShortcut('Alt+Ctrl+F10')
-        #RunAct.setStatusTip('open the Result')
-        #self.Result(RunAct, RunAct(triggered()), this, SLOT(open()))
-        #RunAct.triggered[bool].connect(self.new_window)
+        RunAct = QAction(QIcon('butt.jpg'), '&Run', self)
+        RunAct.setShortcut('Alt+Ctrl+F10')
+        RunAct.setStatusTip('Run application')
+        RunAct.triggered.connect(self.window2)
 
-
-        #menu = self.menuBar()
-        #file_menu = menu.addMenu("&Run")
-        #file_menu.addAction(RunAct)
-
-        self.pushButton = QPushButton("Run", self)
-        self.pushButton.move(60, 600)
-        self.pushButton.setToolTip("<h3>Start the Session</h3>")
-
-        self.pushButton.clicked.connect(self.window2)
-
-
-
-
-
-
-
+        menu = self.menuBar()
+        file_menu = menu.addMenu("&Run")
+        file_menu.addAction(RunAct)
 
         # Auto saving : Enable auto saving if pressing next
         self.auto_saving = QAction(get_str('autoSaveMode'), self)
@@ -568,19 +463,14 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
         self.display_label_option.setChecked(settings.get(SETTING_PAINT_LABEL, False))
         self.display_label_option.triggered.connect(self.toggle_paint_labels_option)
 
-
-
-
-
-
         add_actions(self.menus.file,
-                    (open, open_dir, change_save_dir, open_annotation, copy_prev_bounding, self.menus.recentFiles, save, save_as, close, reset_all, delete_image, quit))
+                    (open, open_dir, change_save_dir, open_annotation, self.menus.recentFiles, save, close, reset_all, delete_image, quit))
         add_actions(self.menus.help, (Run_default, show_info, show_shortcut))
         add_actions(self.menus.view, (
             self.auto_saving,
             self.single_class_mode,
             self.display_label_option,
-            labels, advanced_mode, None,
+            labels, None,
             hide_all, show_all, None,
             zoom_in, zoom_out, zoom_org, None,
             fit_window, fit_width))
@@ -594,9 +484,7 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
             action('&Move here', self.move_shape)))
 
         self.tools = self.toolbar('Tools')
-        self.actions.beginner = (
-
-            )
+        self.actions.beginner = ( )
 
         self.actions.advanced = (
             open, open_dir, change_save_dir, open_next_image, open_prev_image, save, save_format, None,
@@ -652,13 +540,6 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
         # Add chris
         Shape.difficult = self.difficult
 
-
-
-
-
-
-
-
         def xbool(x):
             if isinstance(x, QVariant):
                 return x.toBool()
@@ -689,110 +570,6 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
         # Open Dir if default file
         if self.file_path and os.path.isdir(self.file_path):
             self.open_dir_dialog(dir_path=self.file_path, silent=True)
-
-    def window2(self):  # <===
-        self.w = Window2()
-        self.w.show()
-
-
-    def new_window(self):
-
-        # Important! Add `self` to keep the window open until closed
-        self.another_window = AnotherWindow()
-
-        self.another_window.show()
-
-    def dialog(self):
-        self.setWindowTitle("scandat studio")
-
-
-
-
-
-
-
-    def Result(self):
-        self.setWindowTitle('Scandat Studio')
-        self.setGeometry(20,30,1300,800)
-        self.setWindowIcon(QIcon('logo5.png'))
-
-        button = QPushButton('Run', self)
-        button.setToolTip('This is an example button')
-        button.setGeometry(500, 600, 100, 30)
-        button.clicked.connect(self.on_click)
-
-        button2 = QPushButton('Open Dir', self)
-        button2.setToolTip('this is for open directory')
-        button2.setGeometry(150, 100, 170, 30)
-        button2.clicked.connect(self.on_click)
-
-        button3 = QPushButton('Select Bounding Template', self)
-        button3.setToolTip('this is for open directory')
-        button3.setGeometry(800, 100, 170, 30)
-        button3.clicked.connect(self.on_click)
-
-        button4 = QPushButton('View Results', self)
-        button4.setToolTip('this is for open directory')
-        button4.setGeometry(1000, 660, 100, 30)
-        button4.clicked.connect(self.on_click)
-
-        combobox = QComboBox(self)
-        combobox.setToolTip('this is for selection')
-        combobox.setGeometry(800, 150, 170, 30)
-        pro_list = ['temp1', 'temp2', 'temp3', 'temp4', 'temp5']
-        combobox.setEditable(False)
-        combobox.addItems(pro_list)
-        combobox.activated.connect(self.pro_click)
-
-        self.label_1 = QLabel("", self)
-        self.label_1.move(80, 190)
-        self.label_1.setStyleSheet("border :1px solid black;")
-        self.label_1.resize(370, 400)
-
-        self.label_2 = QLabel("", self)
-        self.label_2.move(700, 190)
-        self.label_2.setStyleSheet("border :1px solid black;")
-        self.label_2.resize(370, 400)
-
-        self.label_3 = QLabel('Run Status :', self)
-        self.label_3.move(100, 665)
-        self.label_3.setFont(QFont('Arial', 10))
-
-        self.label_4 = QLabel('Run Status :', self)
-        self.label_4.move(360, 665)
-        self.label_4.setFont(QFont('Arial', 10))
-
-        self.label_5 = QLabel('Run Status :', self)
-        self.label_5.move(660, 665)
-        self.label_5.setFont(QFont('Arial', 10))
-
-        self.label_6 = QLabel('Not Started ', self)
-        self.label_6.move(180, 665)
-        self.label_6.setStyleSheet('background: 2px solid red')
-        self.label_6.setFont(QFont('Arial', 10))
-
-        self.label_7 = QLabel('In Progress ', self)
-        self.label_7.move(440, 665)
-        self.label_7.setStyleSheet('background: 2px solid brown')
-        self.label_7.setFont(QFont('Arial', 10))
-
-        self.label_8 = QLabel('Completed ', self)
-        self.label_8.move(740, 665)
-        self.label_8.setStyleSheet('background: 2px solid green')
-        self.label_8.setFont(QFont('Arial', 10))
-
-
-        self.show()
-
-
-
-    @pyqtSlot()
-    def on_click(self):
-        print('PyQt5 button click')
-        
-
-    def pro_click(self):
-        print('choosen')
 
     def keyReleaseEvent(self, event):
         if event.key() == Qt.Key_Control:
@@ -1559,8 +1336,7 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
 
     def open_dir_dialog(self, _value=False, dir_path=None, silent=False):
         if not self.may_continue():
-            return
-
+            return 
         default_open_dir_path = dir_path if dir_path else '.'
         if self.last_open_dir and os.path.exists(self.last_open_dir):
             default_open_dir_path = self.last_open_dir
@@ -1574,6 +1350,7 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
             target_dir_path = ustr(default_open_dir_path)
         self.last_open_dir = target_dir_path
         self.import_dir_images(target_dir_path)
+        
 
     def import_dir_images(self, dir_path):
         if not self.may_continue() or not dir_path:
@@ -1845,6 +1622,9 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
         print(shapes)
         self.load_labels(shapes)
         self.canvas.verified = t_yolo_parse_reader.verified
+    def window2(self):
+        self.w = Window2()
+        self.w.show()    
 
     def load_create_ml_json_by_filename(self, json_path, file_path):
         if self.file_path is None:
@@ -1872,6 +1652,188 @@ class MainWindow(QMainWindow, WindowMixin, QWidget):
 
     def toggle_draw_square(self):
         self.canvas.set_drawing_shape_to_square(self.draw_squares_option.isChecked())
+       
+class Window2(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.string_bundle = StringBundle.get_bundle()
+        get_str = lambda str_id: self.string_bundle.get_string(str_id)
+        self.setWindowTitle("Scandat Studio")
+        self.setGeometry(20, 30, 1300, 800)
+        self.setWindowIcon(QIcon('logo5.png'))
+        self.setStyleSheet("background:#669999")
+
+        run = QPushButton('Run', self)
+        run.setToolTip('This is an example button')
+        run.setGeometry(200, 600, 100, 50)
+        run.clicked.connect(self.on_click)
+        run.setStyleSheet("background:#11661f")
+
+        Open_dir = QPushButton('Open Dir', self)
+        Open_dir.setToolTip('this is for open directory')
+        Open_dir.setGeometry(150, 100, 170, 30)
+        Open_dir.clicked.connect(self.dialog)
+        Open_dir.setStyleSheet("background:#b04a1a")
+
+        self.ok_btn = QPushButton('Ok', self)
+        self.ok_btn.setGeometry(500,100, 100, 30)
+        self.ok_btn.clicked.connect(self.ButtonClicked)
+        self.ok_btn.setStyleSheet("background:#11661f")
+
+        self.choose_invoice = QLabel('choose the ivoices', self)
+        self.choose_invoice.move(185,140)
+        self.choose_invoice.resize(170,45)
+        self.choose_invoice.setStyleSheet('colour:black; background:#b04a1a"')
+
+
+        fsm = QFileSystemModel()
+        index = fsm.setRootPath(constants.Dir_path_save)
+        self.combobox = QComboBox(self)
+        self.combobox.setToolTip('this is for selection')
+        self.combobox.setGeometry(800, 100, 170, 30)
+        self.combobox.setModel(fsm)
+        self.combobox.setRootModelIndex(index)
+        self.combobox.setStyleSheet("background:#b04a1a")
+        self.combobox.activated.connect(self.onChanged)
+        
+
+        self.Temp_name = QLabel('', self)
+        self.Temp_name.move(700, 190)
+        self.Temp_name.setFont(QFont('Arial', 10))
+        self.Temp_name.resize(450,400)
+        self.Temp_name.setStyleSheet("border :3px solid black;")
+        self.Temp_name.setStyleSheet("background:white")
+        self.lay = QVBoxLayout(self.Temp_name)
+
+        self.View_Result = QPushButton('View Results', self)
+        self.View_Result.setToolTip('This is to view result')
+        self.View_Result.setGeometry(800, 600, 100, 50)
+        self.View_Result.clicked.connect(self.view_result)
+        self.View_Result.setStyleSheet("background:#d4bc20")
+
+
+        self.Img_list = QListView(self)
+        self.check = QCheckBox()
+        # self.fileModel = QFileSystemModel()
+        # self.fileModel.setFilter(QDir.NoDotAndDotDot |  QDir.Files)
+        # elf.Img_list.setModel(self.fileModel)s
+        self.Img_list.move(80, 190)
+        self.Img_list.setStyleSheet("border :3px solid black;")
+        self.Img_list.setStyleSheet("background:white")
+        self.Img_list.resize(370, 400)
+        print(self.Img_list)
+        self.lay2 = QVBoxLayout(self.Img_list)
+
+        # self.Img_list.clicked.connect(self.on_click)
+
+        Go_Back = QPushButton('Go Back', self)
+        Go_Back.setToolTip('This is an example button')
+        Go_Back.setGeometry(550, 600, 100, 50)
+        Go_Back.clicked.connect(self.on_click)
+        Go_Back.setStyleSheet("background:#18b0b8")
+        self.listWidgetTestCases = QtWidgets.QListWidget()
+
+
+    @pyqtSlot()
+    def dialog(self):
+        global selected_img_path
+        dir_ = QtWidgets.QFileDialog.getExistingDirectory(None, 'Select project folder:', 'D:\scandat\scandat-main\BotBees')
+        # self.Img_list.setRootIndex(self.fileModel.index(dir_))
+        # self.Img_list.setRootIndex(self.fileModel.setRootPath(dir_))
+        img_folder_path = dir_
+        dirListing = os.listdir(img_folder_path)
+        for i in dirListing:  # <---
+            self.checkbox = QCheckBox(i)
+            self.checkbox.setChecked(False)
+            self.lay2.addWidget(self.checkbox)
+
+
+    def ButtonClicked(self):
+        self.ok_btn.hide()
+        checked_list = []
+        f = open("file.txt", 'w+')
+        for i in range(self.lay2.count()):
+            chBox = self.lay2.itemAt(i).widget()
+            if chBox.isChecked():
+                checked_list.append(chBox.text())
+        # print("selected QCheckBox: " + str(list(checked_list)))
+        for i in range(len(checked_list)):
+            selected_images = constants.path_fol_img + '/' + str(checked_list[i])
+            print(selected_images)
+            with open("file.txt", "a",newline='') as output:
+                output.write(selected_images +'\n')
+                print('')
+        f.close()
+
+    def onClicked(self):
+        print('')
+
+    def onChanged(self):
+         # finding the content of current item in combo box
+        content = self.combobox.currentText()
+        Xml_temp_path =  (constants.Dir_path_save+'/'+content)
+        # showing content on the screen though label
+        # self.Temp_name.setText("Temp Selected:" + Xml_temp_path)
+        print("on change was called")
+        return Xml_temp_path
+
+    def on_click(self):
+        root = tkinter.Tk()
+        root.title("BotBees")
+        root.geometry('1x1')
+        FileExce.File_exe(self.onChanged())
+        tkinter.messagebox.showinfo("information","the running process is done")
+        root.destroy()
+        # print('PyQt5 button click')
+
+    def view_result(self):
+        self.View_Result.hide()
+        self.Temp_name.clear()
+        file1 = open('file.txt', 'r')
+        Lines = file1.readlines()
+        # img_folder_path = constants.CSV_dir
+        # dirListing = os.listdir(img_folder_path)
+        # print(Lines)
+        for line in Lines:  # <---
+            img_path = (line.strip())
+            fle = img_path.split("/")
+            img_name = (fle[-1])
+            self.btn = QPushButton(img_name, self)
+            self.btn.setStyleSheet('background:green')
+            self.btn.resize(100, 100)
+            self.lay.addWidget(self.btn)
+            btn_text = self.btn.text()
+            self.btn.clicked.connect(partial(self.click, btn_text))
+
+
+        # img_folder_path = constants.plot_image_dir
+        # dirListing = os.listdir(img_folder_path)
+        # output_csv = constants.CSV_dir
+        # csv_list = os.listdir(output_csv)
+        # file1 = open('file.txt', 'r')
+        # Lines = file1.readlines()
+        # for line in Lines:
+        #     img_path = (line.strip())
+        #     fle = img_path.split("/")
+        #     img_name = (fle[-1])
+        #     # print(img_name)
+        #     for img in dirListing:
+        #         # print(i)
+        #         for csr in csv_list:
+        #             cs = csr.split('.')[0]
+        #             name_csv = (cs + ".jpg")
+        #             # print(cs+".jpg")
+        #             if img_name == img and img_name == name_csv:
+
+                        # print(img, 'is equal', img_name, 'is also equal', name_csv)
+                        # return btn_text
+
+
+    def click(self, name):
+        self.w = view_result.Window3()
+        self.w.Image_text_loading(name)
+        self.w.show()
+
 
 def inverted(color):
     return QColor(*[255 - v for v in color.getRgb()])

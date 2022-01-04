@@ -1,0 +1,123 @@
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+
+
+
+class Ui_Run_Screen(QWidget):
+    def setupUis(self, Run_Screen):
+        Run_Screen.setObjectName("Run_Screen")
+        Run_Screen.resize(1308, 865)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("G:\Scandat\sacndat_studio\logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Run_Screen.setWindowIcon(icon)
+        self.centralwidget = QtWidgets.QWidget(Run_Screen)
+        self.centralwidget.setObjectName("centralwidget")
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(490, 20, 414, 42))
+        font = QtGui.QFont()
+        font.setPointSize(26)
+        self.label.setFont(font)
+        self.label.setAutoFillBackground(False)
+        self.label.setStyleSheet("background-color: rgb(220, 220, 0);\n"
+"background-color: rgb(244, 244, 0);")
+        self.label.setObjectName("label")
+        self.Opendir_button = QtWidgets.QPushButton(self.centralwidget)
+        self.Opendir_button.setGeometry(QtCore.QRect(180, 100, 201, 41))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setUnderline(False)
+        font.setWeight(50)
+        font.setStrikeOut(False)
+        font.setKerning(True)
+        self.Opendir_button.setFont(font)
+        self.Opendir_button.setObjectName("Opendir_button")
+        self.listWidget = QtWidgets.QLabel(self.centralwidget)
+        self.listWidget.setGeometry(QtCore.QRect(30, 180, 571, 361))
+        self.listWidget.setObjectName("listWidget")
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(930, 70, 211, 41))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.pushButton.setFont(font)
+        self.pushButton.setObjectName("pushButton")
+        self.comboBox = QtWidgets.QComboBox(self.centralwidget)
+        self.comboBox.setGeometry(QtCore.QRect(938, 130, 201, 22))
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.listWidget_2 = QtWidgets.QListWidget(self.centralwidget)
+        self.listWidget_2.setGeometry(QtCore.QRect(750, 170, 511, 371))
+        self.listWidget_2.setObjectName("listWidget_2")
+        self.Run_button = QtWidgets.QPushButton(self.centralwidget)
+        self.Run_button.setGeometry(QtCore.QRect(600, 560, 151, 41))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.Run_button.setFont(font)
+        self.Run_button.setObjectName("Run_button")
+        self.Running_status = QtWidgets.QLabel(self.centralwidget)
+        self.Running_status.setGeometry(QtCore.QRect(100, 620, 151, 31))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.Running_status.setFont(font)
+        self.Running_status.setObjectName("Running_status")
+        self.Status_Result = QtWidgets.QLineEdit(self.centralwidget)
+        self.Status_Result.setGeometry(QtCore.QRect(270, 620, 241, 41))
+        self.Status_Result.setObjectName("Status_Result")
+        self.View_results = QtWidgets.QPushButton(self.centralwidget)
+        self.View_results.setGeometry(QtCore.QRect(880, 610, 251, 51))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.View_results.setFont(font)
+        self.View_results.setObjectName("View_results")
+        Run_Screen.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(Run_Screen)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1308, 21))
+        self.menubar.setObjectName("menubar")
+        Run_Screen.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(Run_Screen)
+        self.statusbar.setObjectName("statusbar")
+        Run_Screen.setStatusBar(self.statusbar)
+
+        self.retranslateUis(Run_Screen)
+        QtCore.QMetaObject.connectSlotsByName(Run_Screen)
+
+        self.Opendir_button.clicked.connect(self.open_file)
+
+    def open_file(self):
+        print('it is coming inside')
+        file_name, _ = QFileDialog.getOpenFileName(self, "open the Image file", r"<Default dir>",
+                                                   "Image files(*.jpg)")
+        self.listWidget.setPixmap(QPixmap(file_name))
+
+
+    def retranslateUis(self, Run_Screen):
+        _translate = QtCore.QCoreApplication.translate
+        Run_Screen.setWindowTitle(_translate("Run_Screen", "Run_Screen"))
+        self.label.setText(_translate("Run_Screen", "ScanDat - Run Automation"))
+        self.Opendir_button.setText(_translate("Run_Screen", "Open Directory"))
+        self.pushButton.setText(_translate("Run_Screen", "Select Template"))
+        self.comboBox.setItemText(0, _translate("Run_Screen", "Template-1"))
+        self.comboBox.setItemText(1, _translate("Run_Screen", "Template-2"))
+        self.comboBox.setItemText(2, _translate("Run_Screen", "Template-3"))
+        self.comboBox.setItemText(3, _translate("Run_Screen", "Template-4"))
+        self.comboBox.setItemText(4, _translate("Run_Screen", "Template-5"))
+        self.Run_button.setText(_translate("Run_Screen", "Run"))
+        self.Running_status.setText(_translate("Run_Screen", "Running Status :"))
+        self.View_results.setText(_translate("Run_Screen", "View_Results"))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Run_Screen = QtWidgets.QMainWindow()
+    ui = Ui_Run_Screen()
+    ui.setupUis(Run_Screen)
+    Run_Screen.show()
+    sys.exit(app.exec_())

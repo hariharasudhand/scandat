@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ScandatStudio</class>
+ <widget class="QMainWindow" name="ScandatStudio">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1400</width>
+    <height>767</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Scandat Studio</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>logo.png</normaloff>logo.png</iconset>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(247, 255, 197);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="logolabel">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>81</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>logo.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>1060</x>
+      <y>0</y>
+      <width>301</width>
+      <height>691</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="FileList">
+     <attribute name="title">
+      <string>File_List</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="BoxLabel">
+     <attribute name="title">
+      <string>Box_Label</string>
+     </attribute>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="mouseTracking">
+    <bool>false</bool>
+   </property>
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(179, 0, 0);</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionopen"/>
+   <addaction name="actionnew"/>
+   <addaction name="actionsave"/>
+   <addaction name="actionsaveAs"/>
+   <addaction name="actioncreateRECT"/>
+   <addaction name="actionEditLabel"/>
+   <addaction name="actionDeleteRECT"/>
+   <addaction name="actionZoomIn"/>
+   <addaction name="actionZoomOut"/>
+   <addaction name="actionRun"/>
+   <addaction name="actionQuit"/>
+   <addaction name="actionInformation"/>
+  </widget>
+  <action name="actionopen">
+   <property name="icon">
+    <iconset>
+     <normaloff>pyqt5 icons/icons/icons/open-source.png</normaloff>pyqt5 icons/icons/icons/open-source.png</iconset>
+   </property>
+   <property name="text">
+    <string>open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionnew">
+   <property name="icon">
+    <iconset>
+     <normaloff>pyqt5 icons/icons/new.png</normaloff>pyqt5 icons/icons/new.png</iconset>
+   </property>
+   <property name="text">
+    <string>opendir</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionsave">
+   <property name="icon">
+    <iconset>
+     <normalon>pyqt5 icons/icons/icons/safe--plus.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionsaveAs">
+   <property name="icon">
+    <iconset>
+     <normalon>pyqt5 icons/icons/icons/safe--pencil.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>saveAs</string>
+   </property>
+  </action>
+  <action name="actioncreateRECT">
+   <property name="icon">
+    <iconset>
+     <normaloff>pyqt5 icons/icons/icons/receipt-medium.png</normaloff>pyqt5 icons/icons/icons/receipt-medium.png</iconset>
+   </property>
+   <property name="text">
+    <string>createRECT</string>
+   </property>
+   <property name="shortcut">
+    <string>W</string>
+   </property>
+  </action>
+  <action name="actionEditLabel">
+   <property name="icon">
+    <iconset>
+     <normalon>pyqt5 icons/icons/icons/edit-list-rtl.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>EditLabel</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionDeleteRECT">
+   <property name="icon">
+    <iconset>
+     <normaloff>pyqt5 icons/icons/icons/document-attribute-x.png</normaloff>pyqt5 icons/icons/icons/document-attribute-x.png</iconset>
+   </property>
+   <property name="text">
+    <string>DeleteRECT</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="actionZoomIn">
+   <property name="icon">
+    <iconset>
+     <normaloff>pyqt5 icons/icons/zoom-in.png</normaloff>pyqt5 icons/icons/zoom-in.png</iconset>
+   </property>
+   <property name="text">
+    <string>ZoomIn</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+=, Ctrl+=</string>
+   </property>
+  </action>
+  <action name="actionZoomOut">
+   <property name="icon">
+    <iconset>
+     <normaloff>pyqt5 icons/icons/zoom-out.png</normaloff>pyqt5 icons/icons/zoom-out.png</iconset>
+   </property>
+   <property name="text">
+    <string>ZoomOut</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actionRun">
+   <property name="icon">
+    <iconset>
+     <normaloff>pyqt5 icons/icons/done.png</normaloff>pyqt5 icons/icons/done.png</iconset>
+   </property>
+   <property name="text">
+    <string>Run</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="icon">
+    <iconset>
+     <normaloff>pyqt5 icons/icons/quit.png</normaloff>pyqt5 icons/icons/quit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionInformation">
+   <property name="icon">
+    <iconset>
+     <normaloff>pyqt5 icons/icons/help.png</normaloff>pyqt5 icons/icons/help.png</iconset>
+   </property>
+   <property name="text">
+    <string>Information</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

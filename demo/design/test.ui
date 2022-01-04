@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1284</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>11</pointsize>
+    <weight>50</weight>
+    <bold>false</bold>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Scandat Studio</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../logo.png</normaloff>../../logo.png</iconset>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(248, 255, 172);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QListWidget" name="labelwidget">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>30</y>
+      <width>211</width>
+      <height>591</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: rgb(97, 97, 97);</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>10</y>
+      <width>171</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Label List</string>
+    </property>
+   </widget>
+   <widget class="QListView" name="listView">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>80</y>
+      <width>151</width>
+      <height>511</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: rgb(93, 92, 85);</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Box Labels</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>70</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>difficult</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBox_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>141</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>use_default_label</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="RunButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>550</y>
+      <width>101</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Run</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar_2">
+   <property name="windowTitle">
+    <string>toolBar_2</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action_New"/>
+   <addaction name="action_open"/>
+   <addaction name="action_Copy_Previous_Bounding_Boxes_In_Current_Images"/>
+   <addaction name="action_Save"/>
+   <addaction name="action_Current_Rect_Box"/>
+   <addaction name="action_Edit_Label"/>
+   <addaction name="action_Duplicate_Rectbox"/>
+   <addaction name="action_Delete_Rectbox"/>
+   <addaction name="actionRun"/>
+   <addaction name="actionzoom_in"/>
+   <addaction name="actionzoom_out"/>
+   <addaction name="actionfit_window"/>
+   <addaction name="action_Reset_All"/>
+   <addaction name="action_Close"/>
+   <addaction name="action_Quit"/>
+  </widget>
+  <action name="action_New">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../work/scandatsource/scandat/resources/icons/file.png</normaloff>../../../../work/scandatsource/scandat/resources/icons/file.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Open..</string>
+   </property>
+   <property name="toolTip">
+    <string>Open a new file</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="action_open">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../work/scandatsource/scandat/resources/icons/file.png</normaloff>../../../../work/scandatsource/scandat/resources/icons/file.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;open_Dir</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
+   </property>
+  </action>
+  <action name="action_save">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../work/scandatsource/scandat/resources/icons/file.png</normaloff>../../../../work/scandatsource/scandat/resources/icons/file.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Change save Dir</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="action_Exit">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../work/scandatsource/scandat/resources/icons/file.png</normaloff>../../../../work/scandatsource/scandat/resources/icons/file.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Open Annotation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+O</string>
+   </property>
+  </action>
+  <action name="action_Copy_Previous_Bounding_Boxes_In_Current_Images">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../work/scandatsource/scandat/resources/icons/copy.png</normaloff>../../../../work/scandatsource/scandat/resources/icons/copy.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Copy Previous Bounding Boxes In Current Images</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="action_Open_Recent">
+   <property name="text">
+    <string>&amp;Open Recent</string>
+   </property>
+  </action>
+  <action name="action_Save">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../work/scandatsource/scandat/resources/icons/save.png</normaloff>../../../../work/scandatsource/scandat/resources/icons/save.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="action_Save_As">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../work/scandatsource/scandat/resources/icons/save-as.png</normaloff>../../../../work/scandatsource/scandat/resources/icons/save-as.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save As</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="action_Close">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../work/scandatsource/scandat/resources/icons/close.png</normaloff>../../../../work/scandatsource/scandat/resources/icons/close.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Close</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="action_Reset_All">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../work/scandatsource/scandat/resources/icons/resetall.png</normaloff>../../../../work/scandatsource/scandat/resources/icons/resetall.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Reset All</string>
+   </property>
+  </action>
+  <action name="action_Delet_Current_Image">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../work/scandatsource/scandat/resources/icons/close.png</normaloff>../../../../work/scandatsource/scandat/resources/icons/close.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Delet Current Image</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+D</string>
+   </property>
+  </action>
+  <action name="action_Quit">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../work/scandatsource/scandat/resources/icons/quit.png</normaloff>../../../../work/scandatsource/scandat/resources/icons/quit.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="action_Current_Rect_Box">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../pyqt5 icons/icons/icons/box-label.png</normaloff>../../../../pyqt5 icons/icons/icons/box-label.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Create Rect Box</string>
+   </property>
+   <property name="shortcut">
+    <string>W</string>
+   </property>
+  </action>
+  <action name="action_Edit_Label">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../pyqt5 icons/icons/icons/edit-signiture.png</normaloff>../../../../pyqt5 icons/icons/icons/edit-signiture.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Edit Label</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="action_Duplicate_Rectbox">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../pyqt5 icons/icons/icons/box.png</normaloff>../../../../pyqt5 icons/icons/icons/box.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Duplicate Rectbox</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="action_Delete_Rectbox">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../resources/icons/cancel.png</normaloff>../../resources/icons/cancel.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Delete Rectbox</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="action_Auto_SaveMode">
+   <property name="text">
+    <string>&amp;Auto SaveMode</string>
+   </property>
+  </action>
+  <action name="action_Single_class_Mode">
+   <property name="text">
+    <string>&amp;Single class Mode</string>
+   </property>
+  </action>
+  <action name="action_Display_Labels">
+   <property name="text">
+    <string>&amp;Display Labels</string>
+   </property>
+  </action>
+  <action name="actionRun">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../resources/icons/done.png</normaloff>../../resources/icons/done.png</iconset>
+   </property>
+   <property name="text">
+    <string>Run</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Shift+F10</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="action_tutorial">
+   <property name="text">
+    <string>&amp;tutorial </string>
+   </property>
+  </action>
+  <action name="action_Information">
+   <property name="text">
+    <string>&amp;Information</string>
+   </property>
+  </action>
+  <action name="action_Keyboard_Shortcuts">
+   <property name="text">
+    <string>&amp;Keyboard Shortcuts</string>
+   </property>
+  </action>
+  <action name="actionzoom_in">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../resources/icons/zoom-in.png</normaloff>../../resources/icons/zoom-in.png</iconset>
+   </property>
+   <property name="text">
+    <string>zoom_in</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+=</string>
+   </property>
+  </action>
+  <action name="actionzoom_out">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../resources/icons/zoom-out.png</normaloff>../../resources/icons/zoom-out.png</iconset>
+   </property>
+   <property name="text">
+    <string>zoom_out</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actionfit_window">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../resources/icons/fit-window.png</normaloff>../../resources/icons/fit-window.png</iconset>
+   </property>
+   <property name="text">
+    <string>fit_window</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
