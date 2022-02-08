@@ -2,35 +2,29 @@
 # -*- coding: utf-8 -*-
 from _csv import reader, writer
 
+
+
 import FileExce
 import constants
 import argparse
 import codecs
-import distutils.spawn
 import os.path
 import platform
-import re
-import sys
-import subprocess
 import shutil
 import webbrowser as wb
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import *
 from PyQt5 import QtGui
-from PyQt5.QtGui import QPixmap
-import sys
 from tkinter import *
+import xml.etree.ElementTree as ET
 
 import view_result
 from view_result import *
 
 
 from functools import partial
-from collections import defaultdict
 from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication
+from PyQt5.QtWidgets import QAction, QApplication
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import *
 
 try:
     from PyQt5.QtGui import *
@@ -70,13 +64,10 @@ from libs.create_ml_io import JSON_EXT
 from libs.ustr import ustr
 from libs.hashableQListWidgetItem import HashableQListWidgetItem
 import tkinter.messagebox
+from PIL import Image
 
 __appname__ = 'Scandat Studio'
 
-
-#def bluetooth(clicked):
-    #print("clicked")
-#bluetooth()
 
 
 class WindowMixin(object):
@@ -108,7 +99,14 @@ class MainWindow(QMainWindow, WindowMixin):
         self.setWindowTitle(__appname__)
         self.setWindowIcon(QtGui.QIcon('logo.png'))
         self.resize(400, 200)
-        self.setStyleSheet("background:#669999")
+        self.stylesheet = """
+            MainWindow {
+                background-image: url("G:Scandat/sacndat_studio/demo/demo4.png"); 
+                background-repeat: no-repeat; 
+                background-position: center;
+            }
+        """
+        self.setStyleSheet("background:#2c3644")
 
 
 
@@ -157,7 +155,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # Create a widget for using default label
         self.use_default_label_checkbox = QCheckBox(get_str('useDefaultLabel'))
-        self.use_default_label_checkbox.setStyleSheet('color:#16171a')
+        self.use_default_label_checkbox.setStyleSheet('color:#ffffff')
         self.use_default_label_checkbox.setChecked(False)
         self.default_label_text_line = QLineEdit()
         use_default_label_qhbox_layout = QHBoxLayout()
@@ -168,7 +166,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # Create a widget for edit and diffc button
         self.diffc_button = QCheckBox(get_str('useDifficult'))
-        self.diffc_button.setStyleSheet('color:#16171a')
+        self.diffc_button.setStyleSheet('color:#ffffff')
         self.diffc_button.setChecked(False)
         self.diffc_button.stateChanged.connect(self.button_state)
         # self.edit_button = QToolButton()
@@ -181,7 +179,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # Create and add combobox for showing unique labels in group
         self.combo_box = ComboBox(self)
-        self.combo_box.setStyleSheet('background:#16171a')
+        self.combo_box.setStyleSheet('color:#10bc83; background:#10bc83')
         list_layout.addWidget(self.combo_box)
 
         # Create and add a widget for showing current label items
@@ -198,7 +196,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
 
         self.dock = QDockWidget(get_str('boxLabelText'), self)
-        self.dock.setStyleSheet('color:#f2ab53')
+        self.dock.setStyleSheet('color:#eb4034')
         self.dock.setObjectName(get_str('labels'))
         self.dock.setWidget(label_list_container)
 
@@ -210,7 +208,7 @@ class MainWindow(QMainWindow, WindowMixin):
         file_list_container = QWidget()
         file_list_container.setLayout(file_list_layout)
         self.file_dock = QDockWidget(get_str('fileList'), self)
-        self.file_dock.setStyleSheet('color:#f2ab53')
+        self.file_dock.setStyleSheet('color:#eb4034')
         self.file_dock.setObjectName(get_str('files'))
         self.file_dock.setWidget(file_list_container)
 
@@ -443,6 +441,10 @@ class MainWindow(QMainWindow, WindowMixin):
         RunAct.triggered.connect(self.window2)
 
         menu = self.menuBar()
+        menu.setStyleSheet("""QMenuBar { background-color: #eb4034; }QMenu {
+                            background-color: #eb4034;   
+                            border: 1px solid black;
+                            margin: 2px;}""")
         file_menu = menu.addMenu("&Run")
         file_menu.addAction(RunAct)
 
@@ -1652,7 +1654,8 @@ class MainWindow(QMainWindow, WindowMixin):
 
     def toggle_draw_square(self):
         self.canvas.set_drawing_shape_to_square(self.draw_squares_option.isChecked())
-       
+
+
 class Window2(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -1661,76 +1664,93 @@ class Window2(QMainWindow):
         self.setWindowTitle("Scandat Studio")
         self.setGeometry(20, 30, 1300, 800)
         self.setWindowIcon(QIcon('logo5.png'))
-        self.setStyleSheet("background:#669999")
+        self.setStyleSheet("background:#2c3644")
 
-        run = QPushButton('Run', self)
-        run.setToolTip('This is an example button')
-        run.setGeometry(200, 600, 100, 50)
-        run.clicked.connect(self.on_click)
-        run.setStyleSheet("background:#11661f")
+        self.run = QPushButton('Run', self)
+        self.run.setToolTip('This is an example button')
+        self.run.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
+        self.run.setGeometry(870, 620, 80, 30)
+        self.run.setFont(QFont('Arial', 10))
+        self.run.clicked.connect(self.on_click)
+        self.run.setStyleSheet("QPushButton {background-color: #10bc83;}"
+                                "QPushButton:hover { background-color: #64ccef;}")
 
         Open_dir = QPushButton('Open Dir', self)
         Open_dir.setToolTip('this is for open directory')
-        Open_dir.setGeometry(150, 100, 170, 30)
+        Open_dir.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
+        Open_dir.setGeometry(170, 100, 170, 30)
+        Open_dir.setFont(QFont('Arial', 10))
         Open_dir.clicked.connect(self.dialog)
-        Open_dir.setStyleSheet("background:#b04a1a")
+        # Open_dir.setStyleSheet("background:#ff4500")
+        Open_dir.setStyleSheet("QPushButton {background-color: #c75050;}"
+                                "QPushButton:hover { background-color: #64ccef;}")
 
         self.ok_btn = QPushButton('Ok', self)
-        self.ok_btn.setGeometry(500,100, 100, 30)
+        self.ok_btn.setGeometry(220, 620, 80, 30)
+        self.ok_btn.setFont(QFont('Arial', 10))
+        self.ok_btn.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
         self.ok_btn.clicked.connect(self.ButtonClicked)
-        self.ok_btn.setStyleSheet("background:#11661f")
+        self.ok_btn.setStyleSheet("QPushButton {background-color: #10bc83;}"
+                                  "QPushButton:hover { background-color: #64ccef;}")
 
         self.choose_invoice = QLabel('choose the ivoices', self)
         self.choose_invoice.move(185,140)
         self.choose_invoice.resize(170,45)
-        self.choose_invoice.setStyleSheet('colour:black; background:#b04a1a"')
+        self.choose_invoice.setFont(QFont('Arial', 12))
+        self.choose_invoice.setStyleSheet('color:#10bc83')
+
+        self.label = QLabel(self)
+        self.pixmap = QPixmap("logo.png")
+        self.label.setPixmap(self.pixmap)
+        self.label.resize(200, 100)
+        self.label.move(540,60)
 
 
         fsm = QFileSystemModel()
         index = fsm.setRootPath(constants.Dir_path_save)
         self.combobox = QComboBox(self)
         self.combobox.setToolTip('this is for selection')
-        self.combobox.setGeometry(800, 100, 170, 30)
+        self.combobox.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
+        self.combobox.setGeometry(820, 100, 170, 30)
         self.combobox.setModel(fsm)
         self.combobox.setRootModelIndex(index)
-        self.combobox.setStyleSheet("background:#b04a1a")
+        # self.combobox.setStyleSheet("background:#ff4500")
+        self.combobox.setStyleSheet("QComboBox {background-color: #c75050;}"
+                                  "QComboBox:hover { background-color: #64ccef;}")
         self.combobox.activated.connect(self.onChanged)
         
 
         self.Temp_name = QLabel('', self)
-        self.Temp_name.move(700, 190)
+        self.Temp_name.move(730, 190)
         self.Temp_name.setFont(QFont('Arial', 10))
-        self.Temp_name.resize(450,400)
+        self.Temp_name.resize(370,400)
         self.Temp_name.setStyleSheet("border :3px solid black;")
         self.Temp_name.setStyleSheet("background:white")
         self.lay = QVBoxLayout(self.Temp_name)
 
-        self.View_Result = QPushButton('View Results', self)
-        self.View_Result.setToolTip('This is to view result')
-        self.View_Result.setGeometry(800, 600, 100, 50)
-        self.View_Result.clicked.connect(self.view_result)
-        self.View_Result.setStyleSheet("background:#d4bc20")
-
-
+        scroll_bar = QScrollBar(self)
         self.Img_list = QListView(self)
         self.check = QCheckBox()
-        # self.fileModel = QFileSystemModel()
-        # self.fileModel.setFilter(QDir.NoDotAndDotDot |  QDir.Files)
-        # elf.Img_list.setModel(self.fileModel)s
         self.Img_list.move(80, 190)
         self.Img_list.setStyleSheet("border :3px solid black;")
         self.Img_list.setStyleSheet("background:white")
-        self.Img_list.resize(370, 400)
+        self.Img_list.resize(360, 400)
+        self.Img_list.setVerticalScrollBar(scroll_bar)
+        self.Img_list.setHorizontalScrollBar(scroll_bar)
         print(self.Img_list)
         self.lay2 = QVBoxLayout(self.Img_list)
 
-        # self.Img_list.clicked.connect(self.on_click)
+
 
         Go_Back = QPushButton('Go Back', self)
         Go_Back.setToolTip('This is an example button')
-        Go_Back.setGeometry(550, 600, 100, 50)
-        Go_Back.clicked.connect(self.on_click)
-        Go_Back.setStyleSheet("background:#18b0b8")
+        Go_Back.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
+        Go_Back.setGeometry(520, 620, 80, 30)
+        Go_Back.setFont(QFont('Arial', 10))
+        Go_Back.clicked.connect(self.onClicked)
+        # Go_Back.setStyleSheet("background:#bcae10")
+        Go_Back.setStyleSheet("QPushButton {background-color: #bcae10;}"
+                                  "QPushButton:hover { background-color: #64ccef;}")
         self.listWidgetTestCases = QtWidgets.QListWidget()
 
 
@@ -1738,8 +1758,6 @@ class Window2(QMainWindow):
     def dialog(self):
         global selected_img_path
         dir_ = QtWidgets.QFileDialog.getExistingDirectory(None, 'Select project folder:', 'D:\scandat\scandat-main\BotBees')
-        # self.Img_list.setRootIndex(self.fileModel.index(dir_))
-        # self.Img_list.setRootIndex(self.fileModel.setRootPath(dir_))
         img_folder_path = dir_
         dirListing = os.listdir(img_folder_path)
         for i in dirListing:  # <---
@@ -1749,7 +1767,7 @@ class Window2(QMainWindow):
 
 
     def ButtonClicked(self):
-        self.ok_btn.hide()
+        # self.ok_btn.hide()
         checked_list = []
         f = open("file.txt", 'w+')
         for i in range(self.lay2.count()):
@@ -1763,70 +1781,133 @@ class Window2(QMainWindow):
             with open("file.txt", "a",newline='') as output:
                 output.write(selected_images +'\n')
                 print('')
+        self.Quality_check()
+        root = tkinter.Tk()
+        root.title("BotBees")
+        root.geometry('1x1')
+        bad_quality = open('Bad_quality.txt', 'r')
+        read_line = bad_quality.readlines()
+        mylist = [str(x.strip().split("/")[-1]) for x in read_line]
+        print(len(mylist), "------------------")
+        msg = '\n'.join(mylist)
+        if (len(mylist)) == 0:
+            tkinter.messagebox.showinfo("good quality images","all images are good quality")
+            self.ok_btn.hide()
+        else:
+            tkinter.messagebox.showinfo("Poor quality images", msg)
+        root.destroy()
         f.close()
 
-    def onClicked(self):
-        print('')
+
 
     def onChanged(self):
          # finding the content of current item in combo box
         content = self.combobox.currentText()
         Xml_temp_path =  (constants.Dir_path_save+'/'+content)
         # showing content on the screen though label
-        # self.Temp_name.setText("Temp Selected:" + Xml_temp_path)
-        print("on change was called")
+        print("on change was called", Xml_temp_path)
         return Xml_temp_path
 
-    def on_click(self):
+    def Quality_check(self):
+        file1 = open('file.txt', 'r')
+        Lines = file1.readlines()
+        f1 = open('Bad_quality.txt', 'w+')
+        f2 = open('Good_quality.txt', 'w+')
+        for line in Lines:
+            image_path = line.strip()
+            image = Image.open(image_path)
+            # image.show()
+            size = image.size
+            # print("this is if condition", size < (Width, Height))
+            print(image.size)
+            if size < (800,1000):
+                print("it is low quality")
+                with open("Bad_quality.txt", "a", newline='') as output:
+                    output.write(line)
+                    print('')
+            else:
+                print("it is good quality")
+                with open("Good_Quality.txt", "a", newline='') as output:
+                    output.write(line)
+                    print('')
+        file1.close()
+        f1.close()
+        f2.close()
+
+    def After_Quality_check(self):
+        file1 = open('Good_quality.txt', 'r')
+        Lines = file1.readlines()
+        with open(self.onChanged(), 'r') as f:
+            tree = ET.parse(self.onChanged())
+            root = tree.getroot()
+            data = f.read()
+        # print(data)
+        for elem in root.iter('width'):
+            print(elem.text)
+        for elem2 in root.iter('height'):
+            print(elem2.text)
+
+        Width = elem.text
+        Height = elem2.text
+        print(Width, Height)
         root = tkinter.Tk()
         root.title("BotBees")
         root.geometry('1x1')
-        FileExce.File_exe(self.onChanged())
-        tkinter.messagebox.showinfo("information","the running process is done")
-        root.destroy()
-        # print('PyQt5 button click')
 
-    def view_result(self):
-        self.View_Result.hide()
+        f1 = open('Image_process.txt', 'w+')
+        for line in Lines:
+            image_path = line.strip()
+            image = Image.open(image_path)
+            fle = image_path.split("/")
+            img_name = (fle[-1])
+            # image.show()
+            size = image.size
+            # print("this is if condition", size < (Width, Height))
+            print(image.size)
+            if size == (int(Width), int(Height)):
+                # tkinter.messagebox.showinfo("message", "processing"+img_name)
+                print("this image is processing")
+                with open("Image_process.txt", "a", newline='') as output:
+                    output.write(line)
+            else:
+                tkinter.messagebox.showinfo("message", "this image cannot be process" + img_name)
+
+        root.destroy()
+        file1.close()
+
+
+    def onClicked(self):
+        self.close()
+        print('')
+
+
+
+    def on_click(self):
+        self.run.hide()
+        root = tkinter.Tk()
+        root.title("BotBees")
+        root.geometry('1x1')
+        self.After_Quality_check()
+        FileExce.File_exe(self.onChanged())
+        tkinter.messagebox.showinfo("process", "Done")
+        root.destroy()
         self.Temp_name.clear()
-        file1 = open('file.txt', 'r')
+        file1 = open('Image_process.txt', 'r')
         Lines = file1.readlines()
-        # img_folder_path = constants.CSV_dir
-        # dirListing = os.listdir(img_folder_path)
-        # print(Lines)
         for line in Lines:  # <---
             img_path = (line.strip())
             fle = img_path.split("/")
             img_name = (fle[-1])
             self.btn = QPushButton(img_name, self)
-            self.btn.setStyleSheet('background:green')
+            self.btn.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
+            # self.btn.setStyleSheet('background:#10bc83')
+            self.btn.setStyleSheet("QPushButton {background-color: #10bc83;}"
+                                  "QPushButton:hover { background-color: #64ccef;}")
             self.btn.resize(100, 100)
             self.lay.addWidget(self.btn)
             btn_text = self.btn.text()
             self.btn.clicked.connect(partial(self.click, btn_text))
-
-
-        # img_folder_path = constants.plot_image_dir
-        # dirListing = os.listdir(img_folder_path)
-        # output_csv = constants.CSV_dir
-        # csv_list = os.listdir(output_csv)
-        # file1 = open('file.txt', 'r')
-        # Lines = file1.readlines()
-        # for line in Lines:
-        #     img_path = (line.strip())
-        #     fle = img_path.split("/")
-        #     img_name = (fle[-1])
-        #     # print(img_name)
-        #     for img in dirListing:
-        #         # print(i)
-        #         for csr in csv_list:
-        #             cs = csr.split('.')[0]
-        #             name_csv = (cs + ".jpg")
-        #             # print(cs+".jpg")
-        #             if img_name == img and img_name == name_csv:
-
-                        # print(img, 'is equal', img_name, 'is also equal', name_csv)
-                        # return btn_text
+        # print('PyQt5 button click')
 
 
     def click(self, name):

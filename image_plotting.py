@@ -23,7 +23,7 @@ xmin= ymin = xmax = ymax = 0
 
 
 
-def plotAndExtractText(x, y, w, h, image, clone_image):
+def plotAndExtractText(x, y, w, h, image, clone_image, fieldname):
  #print(' ploting at cordinates : ', str(x), str(y), str(w), str(h))
  image = cv2.rectangle(image, (x, y), (w, h), (0, 255, 0), 2)
 
@@ -32,30 +32,34 @@ def plotAndExtractText(x, y, w, h, image, clone_image):
  cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
 
  ROI = thresh[y:h, x:w]
- data = pytesseract.image_to_string(ROI, lang='eng', config='--psm 6')
- print(data)
+ data = pytesseract.image_to_string(ROI, config='-c tessedit_char_whitelist=0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.$₹%&*@#!,/\;- --psm 6')
+ # if image == None:
+ #     print("the image is in correct size")
+ # else:
+ #     print("it is good size")
+ print (data)
 
  file_object = open('result.csv', 'a')
- file_object.write(data)
+ file_object.write(fieldname + '   :    ' + data)
  file_object.close()
 
  return data
 
 def showImage(image):
+ file1 = open('file.txt', 'r')
+ Lines = file1.readlines()
  b, g, r = cv2.split(image)
  rgb_img = cv2.merge([r, g, b])
  plt.figure(figsize=(16, 12))
  plt.imshow(rgb_img)
- plt.title('SAMPLE INVOICE WITH WORD LEVEL BOXES')
- filepath = ('G:/Scandat/sacndat_studio/plotted_images'+'/'+constants.i+'image.jpg')
- plt.savefig(filepath)
- constants.i = constants.i +1
- # filename = 'G:/Scandat/sacndat_studio/plotted_images/' + str(count) + '.jpg'
- # plt.savefig(filename)
- # count+=1
- # j +=1
- # cv2.imwrite('G:/Scandat/sacndat_studio/plotted_images', plt)
- # plt.show()
+ for line in Lines:  # <---
+     img_path = (line.strip())
+     fle = img_path.split("/")
+     img_name = (fle[-1])
+     plt.title('SAMPLE INVOICE WITH WORD LEVEL BOXES')
+     filepath = (constants.plot_image_dir+'/'+img_name)
+     plt.savefig(filepath)
+
 
 def loadBoxXML(configXml):
 
@@ -111,8 +115,8 @@ def loadBoxXML(configXml):
            #print("height:",ymax)
        #print("Plotting x ::,y,w,h ",xmin,ymin,xmax,ymax)
        if xmin != 0:
-        plotAndExtractText(xmin,ymin,xmax, ymax,  image, clone_image)
- # showImage(image)
+        plotAndExtractText(xmin,ymin,xmax, ymax,  image, clone_image, fieldName)
+ showImage(image)
 
 
 
